@@ -29,20 +29,26 @@ def index():
     return render_template('index.html')
 
 
-
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
+
     if request.method == "POST":
-        details = request.form
-        Nombre = details['nombre']
-        Apellido = details['apellido']
-        Usuario = details['usuario']
-        Contrasena = details['contrasena']
-        cur = mysql.get_db().cursor()
-        cur.execute("insert into MyUsers (firstname,lastname,password,usuario) values (%s,%s,%s,%s)", (Nombre,Apellido,Contrasena,Usuario))
-        mysql.get_db().commit()
-        cur.close()
-        return 'ok'
+        try:
+            cur = mysql.get_db().cursor()
+            details = request.form
+            Nombre = details['nombre']
+            Apellido = details['apellido']
+            Contrasena = details['contrasena']
+            if len(Nombre) == 0 or len(Apellido) == 0 or len(Contrasena)==0:
+                return "Asegurese de que ha ingresado los datos correctamente"
+            else:
+                cur.execute(" call Registro_Cliente(%s,%s,%s);",(Nombre,Apellido,Contrasena))
+                variable  = cur.fetchall();
+                mysql.get_db().commit()
+                cur.close()
+                return 'el id de registro fue' + str(variable)
+        except:
+            return 'El usuario no se ha podido registrar'
     return render_template('registro.html')
 
 
@@ -61,14 +67,17 @@ def Carro_compras():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
-        details = request.form
-        usuario = details['usr']
-        password = details['pssd']
-        cur = mysql.get_db().cursor()
-        cur.execute("select password from MyUsers where firstname = %s and password ='1234'", (usuario))
-        passd = cur.fetchall()
-        cur.close()
-        return 'ok'
+        try:
+            details = request.form
+            id = details['usr']
+            password = details['pssd']
+            cur = mysql.get_db().cursor()
+            cur.execute("call Validar_Usuario(%s,%s);", (id,password))
+            acc = cur.fetchall()
+            cur.close()
+            return str(acc)
+        except:
+            return 'no se pudo validar el usuario'
     return render_template('login.html')
 
 
