@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,flash,session, g
 from flaskext.mysql import MySQL
 
 app = Flask(__name__)
-
+app.secret_key = 'some_secret'
 
 
 app.debug = True
@@ -17,21 +17,11 @@ mysql.init_app(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == "POST":
-        details = request.form
-        firstName = details['fname']
-        lastName = details['lname']
-        cur = mysql.get_db().cursor()
-        cur.execute("INSERT INTO MyUsers(firstName, lastName) VALUES (%s, %s)", (firstName, lastName))
-        mysql.get_db().commit()
-        cur.close()
-        return 'success'
     return render_template('index.html')
 
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
-
     if request.method == "POST":
         try:
             cur = mysql.get_db().cursor()
@@ -40,13 +30,14 @@ def registro():
             Apellido = details['apellido']
             Contrasena = details['contrasena']
             if len(Nombre) == 0 or len(Apellido) == 0 or len(Contrasena)==0:
-                return "Asegurese de que ha ingresado los datos correctamente"
+                return "rectificar datos"
             else:
                 cur.execute(" call Registro_Cliente(%s,%s,%s);",(Nombre,Apellido,Contrasena))
                 variable  = cur.fetchall();
                 mysql.get_db().commit()
                 cur.close()
-                return 'el id de registro fue' + str(variable)
+                return redirect('/Productos')
+
         except:
             return 'El usuario no se ha podido registrar'
     return render_template('registro.html')
@@ -55,37 +46,60 @@ def registro():
 
 
 
-@app.route('/Productos', methods=['GET','POST'])
-def entrar():
-
-    return render_template('productos.html')
 
 @app.route('/carrito/', methods=['GET','POST'])
 def Carro_compras():
     return render_template('carro.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+
+
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
         try:
+            session.pop('user_id', None)
             details = request.form
             id = details['usr']
             password = details['pssd']
             cur = mysql.get_db().cursor()
             cur.execute("call Validar_Usuario(%s,%s);", (id,password))
             acc = cur.fetchall()
-            cur.close()
-            return str(acc)
+            if str(acc) == "(('Contraseña correcta',),)":
+                session['user_id'] = id
+                cur.execute("call get_nombre(%s)", (id))
+                usuario = cur.fetchall()
+                cur.close()
+                return render_template('Profile.html',usuario = usuario)
+            else :
+                return "contraseña incorrecta"
+                cur.close()
         except:
             return 'no se pudo validar el usuario'
     return render_template('login.html')
 
 
+@app.route('/Productos', methods=['GET','POST'])
+def Productos():
+    cur = mysql.get_db().cursor()
+    cur.execute('call listar_productos();')
+    Productos = cur.fetchall()
+    cur.execute('call listar_tipoProducto();')
+    Tipo_producto = cur.fetchall()
+    return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_producto)
 
 
-@app.route('/usuarios')
-def usuarios():
-    return render_template()
+
+
+@app.route('/Perfil')
+def perfil():
+    return render_template('Profile.html')
+
+
+
+@app.errorhandler(404)
+def Pagina_no_encontrada():
+    return render_template('404.html'),404
+
 
 if __name__ == '__main__':
     app.run()
