@@ -84,9 +84,35 @@ def Productos():
     cur.execute('call listar_productos();')
     Productos = cur.fetchall()
     cur.execute('call listar_tipoProducto();')
-    Tipo_producto = cur.fetchall()
-    return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_producto)
+    Tipo_productos = cur.fetchall()
+    cur.execute('call listar_proveedores();')
+    Proveedores = cur.fetchall()
+    return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_productos,proveedores = Proveedores)
 
+@app.route('/Proveedors/<Proveedor>')
+def Productos_proveedor(Proveedor):
+    cur = mysql.get_db().cursor()
+    cur.execute('call listar_ProveedorID(%s);',(Proveedor))
+    idProveedor = cur.fetchall()
+    cur.execute('call listar_productos_proveedor(%s)',(idProveedor))
+    Productos = cur.fetchall()
+    cur.execute('call listar_tipoProducto();')
+    Tipo_productos = cur.fetchall()
+    cur.execute('call listar_proveedores();')
+    Proveedores = cur.fetchall()
+    return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_productos,proveedores = Proveedores)
+@app.route('/TipoProducto/<Tipo_Producto>')
+def Productos_tipo(Tipo_Producto):
+    cur = mysql.get_db().cursor()
+    cur.execute('call listar_TipoProductoID(%s);',(Tipo_Producto))
+    idTipo = cur.fetchall()
+    cur.execute('call listar_productos_tipo(%s);',(idTipo))
+    Productos = cur.fetchall()
+    cur.execute('call listar_tipoProducto();')
+    Tipo_productos = cur.fetchall()
+    cur.execute('call listar_proveedores();')
+    Proveedores = cur.fetchall()
+    return render_template('productos.html', productos=Productos, Tipo_producto=Tipo_productos, proveedores=Proveedores)
 
 
 

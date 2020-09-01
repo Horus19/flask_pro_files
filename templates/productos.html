@@ -29,9 +29,9 @@
                 Mostrar por tipo
                </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                {% for Tipo_producto in Tipo_producto %}
+                <a class="dropdown-item" href="/TipoProducto/{{Tipo_producto.0}}">{{Tipo_producto.0}}</a>
+                {% endfor %}
             </div>
             </li>
             <li class="nav-item dropdown">
@@ -39,10 +39,10 @@
                 Mostrar por proveedor
                </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+                {% for Proveedor in proveedores %}
+                <a class="dropdown-item" href="/Proveedors/{{Proveedor.0}}">{{Proveedor.0}}</a>
+                {% endfor %}
+                
             </li>
         </ul>
     </nav>
