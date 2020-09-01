@@ -47,9 +47,9 @@ def registro():
 
 
 
-@app.route('/carrito/', methods=['GET','POST'])
-def Carro_compras():
-    return render_template('carro.html')
+@app.route('/carrito/<id>', methods=['GET','POST'])
+def Carro_compras(id):
+    return "se agrego articulo con id:" + str(id)
 
 
 
@@ -122,9 +122,7 @@ def perfil():
 
 
 
-@app.errorhandler(404)
-def Pagina_no_encontrada():
-    return render_template('404.html'),404
+
 
 
 if __name__ == '__main__':
