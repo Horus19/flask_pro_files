@@ -35,8 +35,10 @@ def registro():
                 cur.execute(" call Registro_Cliente(%s,%s,%s);",(Nombre,Apellido,Contrasena))
                 variable  = cur.fetchall();
                 mysql.get_db().commit()
+                cur.execute("call get_nombre(%s)", (variable))
+                usuario = cur.fetchall()
                 cur.close()
-                return redirect('/Productos')
+                return render_template('login_return.html',id = variable, usuario = usuario )
 
         except:
             return 'El usuario no se ha podido registrar'
@@ -55,26 +57,29 @@ def Carro_compras(id):
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    if request.method == "POST":
-        try:
-            session.pop('user_id', None)
-            details = request.form
-            id = details['usr']
-            password = details['pssd']
-            cur = mysql.get_db().cursor()
-            cur.execute("call Validar_Usuario(%s,%s);", (id,password))
-            acc = cur.fetchall()
-            if str(acc) == "(('Contraseña correcta',),)":
-                session['user_id'] = id
-                cur.execute("call get_nombre(%s)", (id))
-                usuario = cur.fetchall()
-                cur.close()
-                return render_template('Profile.html',usuario = usuario)
-            else :
-                return "contraseña incorrecta"
-                cur.close()
-        except:
-            return 'no se pudo validar el usuario'
+    if not session.get('user_id'):
+        if request.method == "POST":
+            try:
+                session.pop('user_id', None)
+                details = request.form
+                id = details['usr']
+                password = details['pssd']
+                cur = mysql.get_db().cursor()
+                cur.execute("call Validar_Usuario(%s,%s);", (id,password))
+                acc = cur.fetchall()
+                if str(acc) == "(('Contraseña correcta',),)":
+                    session['user_id'] = id
+                    cur.execute("call get_nombre(%s)", (id))
+                    usuario = cur.fetchall()
+                    cur.close()
+                    return render_template('Profile.html',usuario = usuario)
+                else :
+                    return "contraseña incorrecta"
+                    cur.close()
+            except:
+                return 'no se pudo validar el usuario'
+    else:
+        return redirect('/Productos')
     return render_template('login.html')
 
 
@@ -118,9 +123,15 @@ def Productos_tipo(Tipo_Producto):
 
 @app.route('/Perfil')
 def perfil():
-    return render_template('Profile.html')
+    if not session.get('user_id'):
+        return redirect('/login/')
+    else:
+        return render_template('Profile.html',usuario = session['user_id'] )
 
-
+@app.route('/Exit')
+def salida():
+    session.pop('user_id')
+    return redirect('/')
 
 
 
