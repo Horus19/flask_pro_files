@@ -1,17 +1,33 @@
+<!DOCTYPE html>
 <html>
+
 <head>
-    <title>Perfil</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
-<h1>Hola {{usuario}} </h1>   
-<p style="margin-top: 25px">Productos<br>
-        <a class="navbar-brand" href="/Productos">
-        <img src="../static/img/game.svg" width="30" height="30" class="d-inline-block align-top" alt='Logo Boostrap'>
-        </a>  
- <p style="margin-top: 25px">cerrar sesion?<br>
-        <a class="navbar-brand" href="/Exit">
-        <img src="../static/img/cry.svg" width="30" height="30" class="d-inline-block align-top" alt='Logo Boostrap'>
-        </a>     
+
+<body style="background-color: #2b2d42">
+    <div class="card" style="background-color: #8d99ae">
+        <div class="card-body" style="padding: 145px;margin: 77px; background-color: #fefae0">
+            <h1 class="card-title">Perfil</h1>
+            <p class="card-text">Hola {{usuario.0.0}}</p>
+            <p style="margin-top: 25px">Productos<br>
+                <a class="navbar-brand" href="/Productos">
+                <img src="../static/img/game.svg" width="30" height="30" class="d-inline-block align-top" alt='Logo Boostrap'>
+                </a>             
+            </p>
+            <p style="margin-top: 25px">cerrar sesion?<br>
+                <a class="navbar-brand" href="/Exit">
+                <img src="../static/img/cry.svg" width="30" height="30" class="d-inline-block align-top" alt='Logo Boostrap'>
+                </a>  
+            </p>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
-    
+
 </html>

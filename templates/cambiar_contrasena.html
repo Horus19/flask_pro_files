@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <scriptsrc="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Los iconos tipo Solid de Fontawesome-->
+    <linkrel="stylesheet"href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <scriptsrc="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <!-- Nuestro css-->
+    <linkrel="stylesheet"type="text/css"href="static/css/index.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link  rel="icon"   href="../static/img/boss.png" type="image/png" />   
+        <style>
+        .user-img{
+                margin-top: -50px;
+                margin-bottom: 35px;
+            }
+        .main-section{
+                margin:0 auto;
+                margin-top: 25%;
+            }
+        .modal-content{
+                background-color: #3b4652;
+                opacity: 85%;
+                padding: 0 20px;
+                
+            }
+        .form-group input{
+                height: 42px;
+                font-size: 18px;
+                border: 0;
+                padding-left: 54px;
+                border-radius: 5px;
+            }
+            
+        </style>
+</head>
+<body style="background: url(../static/img/bd.jpg) no-repeat center center fixed">
+    <div class="modal-dialog text-center">
+        <div class="col-sm-8 main-section">
+            <div class="modal-content">
+                <div class="col-12 user-img">
+                <img src="../static/img/avatar.png">
+                </div>
+                <div style="height: 10px"></div>
+                <form class="col-12" method="POST" action="">
+                    <div class="form-group" id ="contrasena-group">
+                       <input type="password" class = "form-control" placeholder="Nueva contrasena" name="pssd">
+                    </div>
+                    <div style="height: 10px"></div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>cambiar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

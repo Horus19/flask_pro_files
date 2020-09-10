@@ -17,8 +17,10 @@ mysql.init_app(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
-
+    if not session.get('user_id'):
+        return render_template('index.html')
+    else:
+        return redirect('/Perfil')
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -38,7 +40,7 @@ def registro():
                 cur.execute("call get_nombre(%s)", (variable))
                 usuario = cur.fetchall()
                 cur.close()
-                return render_template('login_return.html',id = variable, usuario = usuario )
+                return render_template('registro_Correcto.html',id = variable, usuario = usuario )
 
         except:
             return 'El usuario no se ha podido registrar'
@@ -51,7 +53,10 @@ def registro():
 
 @app.route('/carrito/<id>', methods=['GET','POST'])
 def Carro_compras(id):
-    return "se agrego articulo con id:" + str(id)
+    if not session.get('user_id'):
+        return redirect('/login')
+    else:
+        return "se agrego articulo con id:" + str(id)
 
 
 
@@ -69,10 +74,8 @@ def login():
                 acc = cur.fetchall()
                 if str(acc) == "(('Contraseña correcta',),)":
                     session['user_id'] = id
-                    cur.execute("call get_nombre(%s)", (id))
-                    usuario = cur.fetchall()
                     cur.close()
-                    return render_template('Profile.html',usuario = usuario)
+                    return redirect('/Perfil')
                 else :
                     return "contraseña incorrecta"
                     cur.close()
@@ -106,6 +109,7 @@ def Productos_proveedor(Proveedor):
     cur.execute('call listar_proveedores();')
     Proveedores = cur.fetchall()
     return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_productos,proveedores = Proveedores)
+
 @app.route('/TipoProducto/<Tipo_Producto>')
 def Productos_tipo(Tipo_Producto):
     cur = mysql.get_db().cursor()
@@ -119,14 +123,41 @@ def Productos_tipo(Tipo_Producto):
     Proveedores = cur.fetchall()
     return render_template('productos.html', productos=Productos, Tipo_producto=Tipo_productos, proveedores=Proveedores)
 
-
+@app.route('/Carro')
+def Productos_en_carro():
+    if not session.get('user_id'):
+        return redirect('/login')
+    else:
+        return 'Productos en el carrito:3'
 
 @app.route('/Perfil')
 def perfil():
     if not session.get('user_id'):
         return redirect('/login/')
     else:
-        return render_template('Profile.html',usuario = session['user_id'] )
+        cur = mysql.get_db().cursor()
+        cur.execute('call get_nombre(%s)',(session['user_id']))
+        nombre = cur.fetchall()
+        cur.close()
+        return render_template('Profile.html',usuario = nombre )
+
+@app.route('/Cambiar_Contrasena', methods=['GET','POST'])
+def cambiar_contrasena():
+    if session.get('user_id'):
+        if request.method == "POST":
+            details = request.form
+            nueva_contrasena = details['pssd']
+            cur = mysql.get_db().cursor()
+            id = session['user_id']
+            cur.execute('call cambiar_contrasena(%s,%s);',(id,nueva_contrasena))
+            cur.close()
+            print(id)
+            print(nueva_contrasena)
+            session.pop('user_id',None)
+            return redirect('/login/')
+        return render_template('cambiar_contrasena.html')
+    else:
+        return redirect('/')
 
 @app.route('/Exit')
 def salida():
