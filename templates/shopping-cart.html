@@ -1,109 +1,48 @@
-<!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Shopping Cart - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-    <link rel="stylesheet" href="assets/css/smoothproducts.css">
+    <title>Productos</title>
 </head>
-
-<body>
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="#">game_Shop</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse"
-                id="navcol-1">
-                <ul class="nav navbar-nav ml-auto"></ul>
-            </div>
-        </div>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link  rel="icon"   href="../static/img/boss.png" type="image/png" />
+</head>
+<body style="background-color: #adb5bd">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/">
+        <img src="../static/img/game.svg" width="30" height="30" class="d-inline-block align-top" alt='Logo Boostrap'>
+        </a>
     </nav>
-    <main class="page shopping-cart-page">
-        <section class="clean-block clean-cart dark">
-            <div class="container">
-                <div class="block-heading">
-                    <h2 class="text-info">Shopping Cart</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
-                </div>
-                <div class="content">
-                    <div class="row no-gutters">
-                        <div class="col-md-12 col-lg-8">
-                            <div class="items">
-                                <div class="product">
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col-md-3">
-                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
-                                        </div>
-                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
-                                            <div class="product-specs">
-                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
-                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
-                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-2 quantity"><label class="d-none d-md-block" for="quantity">Quantity</label><input type="number" id="number" class="form-control quantity-input" value="1"></div>
-                                        <div class="col-6 col-md-2 price"><span>$120</span></div>
-                                    </div>
-                                </div>
-                                <div class="product">
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col-md-3">
-                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
-                                        </div>
-                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
-                                            <div class="product-specs">
-                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
-                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
-                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-2 quantity"><label class="d-none d-md-block" for="quantity">Quantity</label><input type="number" id="number" class="form-control quantity-input" value="1"></div>
-                                        <div class="col-6 col-md-2 price"><span>$120</span></div>
-                                    </div>
-                                </div>
-                                <div class="product">
-                                    <div class="row justify-content-center align-items-center">
-                                        <div class="col-md-3">
-                                            <div class="product-image"><img class="img-fluid d-block mx-auto image" src="assets/img/tech/image2.jpg"></div>
-                                        </div>
-                                        <div class="col-md-5 product-info"><a class="product-name" href="#">Lorem Ipsum dolor</a>
-                                            <div class="product-specs">
-                                                <div><span>Display:&nbsp;</span><span class="value">5 inch</span></div>
-                                                <div><span>RAM:&nbsp;</span><span class="value">4GB</span></div>
-                                                <div><span>Memory:&nbsp;</span><span class="value">32GB</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-2 quantity"><label class="d-none d-md-block" for="quantity">Quantity</label><input type="number" id="number" class="form-control quantity-input" value="1"></div>
-                                        <div class="col-6 col-md-2 price"><span>$120</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-lg-4">
-                            <div class="summary">
-                                <h3>Summary</h3>
-                                <h4><span class="text">Subtotal</span><span class="price">$360</span></h4>
-                                <h4><span class="text">Discount</span><span class="price">$0</span></h4>
-                                <h4><span class="text">Shipping</span><span class="price">$0</span></h4>
-                                <h4><span class="text">Total</span><span class="price">$360</span></h4><button class="btn btn-primary btn-block btn-lg" type="button">Checkout</button></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer class="page-footer dark">
-        <div class="footer-copyright">
-            <p>© 2020 Copyright Text</p>
-        </div>
-    </footer>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-    <script src="assets/js/smoothproducts.min.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Valor</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+            <tr>
+                <th>{{producto.0}}</th>
+                <th>{{producto.1}}</th>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th> Valor total </th>
+                <th> {{valor.0.0}} </th>
+            </tr>
+            <tr>
+            <th>
+                <a href='/compra'>Realizar compra</a>    
+            </th>
+            </tr>
+        </tbody>
+    </table>
 </body>
-
 </html>

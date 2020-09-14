@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,flash,session, g
+from flask import Flask, render_template, request, redirect, url_for,flash,session, g,jsonify
 from flaskext.mysql import MySQL
 
 app = Flask(__name__)
@@ -51,12 +51,17 @@ def registro():
 
 
 
-@app.route('/carrito/<id>', methods=['GET','POST'])
-def Carro_compras(id):
+@app.route('/carrito/<idProducto>/<idPedido>', methods=['GET','POST'])
+def Carro_compras(idProducto,idPedido):
     if not session.get('user_id'):
         return redirect('/login')
     else:
-        return "se agrego articulo con id:" + str(id)
+        cur = mysql.get_db().cursor()
+        cur.execute('insert into Pedido_has_Producto values (%s,%s);',(idPedido,idProducto))
+        mysql.get_db().commit();
+        cur.close();
+        session['PedidoID']=idPedido
+        return redirect('/Carro')
 
 
 
@@ -74,6 +79,9 @@ def login():
                 acc = cur.fetchall()
                 if str(acc) == "(('Contraseña correcta',),)":
                     session['user_id'] = id
+                    cur.execute("call Crear_pedido()")
+                    mysql.get_db().commit();
+                    session['pedido_id'] = cur.fetchall()
                     cur.close()
                     return redirect('/Perfil')
                 else :
@@ -95,10 +103,18 @@ def Productos():
     Tipo_productos = cur.fetchall()
     cur.execute('call listar_proveedores();')
     Proveedores = cur.fetchall()
-    return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_productos,proveedores = Proveedores)
+    if not session.get('user_id'):
+        idPedido = '0'
+    else:
+        idPedido = session['pedido_id']
+    return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_productos,proveedores = Proveedores,idPedido = idPedido)
 
 @app.route('/Proveedors/<Proveedor>')
 def Productos_proveedor(Proveedor):
+    if not session.get('user_id'):
+        idPedido = '0'
+    else:
+        idPedido = session['pedido_id']
     cur = mysql.get_db().cursor()
     cur.execute('call listar_ProveedorID(%s);',(Proveedor))
     idProveedor = cur.fetchall()
@@ -108,10 +124,14 @@ def Productos_proveedor(Proveedor):
     Tipo_productos = cur.fetchall()
     cur.execute('call listar_proveedores();')
     Proveedores = cur.fetchall()
-    return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_productos,proveedores = Proveedores)
+    return render_template('productos.html', productos = Productos,Tipo_producto = Tipo_productos,proveedores = Proveedores,idPedido = idPedido)
 
 @app.route('/TipoProducto/<Tipo_Producto>')
 def Productos_tipo(Tipo_Producto):
+    if not session.get('user_id'):
+        idPedido = '0'
+    else:
+        idPedido = session['pedido_id']
     cur = mysql.get_db().cursor()
     cur.execute('call listar_TipoProductoID(%s);',(Tipo_Producto))
     idTipo = cur.fetchall()
@@ -121,14 +141,24 @@ def Productos_tipo(Tipo_Producto):
     Tipo_productos = cur.fetchall()
     cur.execute('call listar_proveedores();')
     Proveedores = cur.fetchall()
-    return render_template('productos.html', productos=Productos, Tipo_producto=Tipo_productos, proveedores=Proveedores)
+    return render_template('productos.html', productos=Productos, Tipo_producto=Tipo_productos, proveedores=Proveedores,idPedido = idPedido)
 
 @app.route('/Carro')
 def Productos_en_carro():
     if not session.get('user_id'):
         return redirect('/login')
     else:
-        return 'Productos en el carrito:3'
+
+        cur = mysql.get_db().cursor()
+        cur.execute('call Productos_en_carrito(%s)',(session['PedidoID']))
+        Productos = cur.fetchall();
+        cur.execute('call valor_total(%s)',(session['PedidoID']))
+        valor = cur.fetchall();
+        cur.close()
+        return render_template('shopping-cart.html',productos=Productos, valor = valor )
+
+
+
 
 @app.route('/Perfil')
 def perfil():
@@ -139,7 +169,8 @@ def perfil():
         cur.execute('call get_nombre(%s)',(session['user_id']))
         nombre = cur.fetchall()
         cur.close()
-        return render_template('Profile.html',usuario = nombre )
+        return render_template('Profile.html',usuario = nombre, idPedido = session['pedido_id'] )
+
 
 @app.route('/Cambiar_Contrasena', methods=['GET','POST'])
 def cambiar_contrasena():
@@ -150,9 +181,8 @@ def cambiar_contrasena():
             cur = mysql.get_db().cursor()
             id = session['user_id']
             cur.execute('call cambiar_contrasena(%s,%s);',(id,nueva_contrasena))
+            mysql.get_db().commit()
             cur.close()
-            print(id)
-            print(nueva_contrasena)
             session.pop('user_id',None)
             return redirect('/login/')
         return render_template('cambiar_contrasena.html')
@@ -162,6 +192,8 @@ def cambiar_contrasena():
 @app.route('/Exit')
 def salida():
     session.pop('user_id')
+    session.pop('PedidoID')
+    session.pop('pedido_id')
     return redirect('/')
 
 
