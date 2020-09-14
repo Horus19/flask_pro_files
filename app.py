@@ -71,6 +71,10 @@ def login():
         if request.method == "POST":
             try:
                 session.pop('user_id', None)
+                #
+                #Borrar cachè
+                #
+                session.clear()
                 details = request.form
                 id = details['usr']
                 password = details['pssd']
@@ -143,20 +147,21 @@ def Productos_tipo(Tipo_Producto):
     Proveedores = cur.fetchall()
     return render_template('productos.html', productos=Productos, Tipo_producto=Tipo_productos, proveedores=Proveedores,idPedido = idPedido)
 
-@app.route('/Carro')
+@app.route('/Carro', methods=['GET','POST'])
 def Productos_en_carro():
     if not session.get('user_id'):
         return redirect('/login')
     else:
-
-        cur = mysql.get_db().cursor()
-        cur.execute('call Productos_en_carrito(%s)',(session['PedidoID']))
-        Productos = cur.fetchall();
-        cur.execute('call valor_total(%s)',(session['PedidoID']))
-        valor = cur.fetchall();
-        cur.close()
-        return render_template('shopping-cart.html',productos=Productos, valor = valor )
-
+        try:
+            cur = mysql.get_db().cursor()
+            cur.execute('call Productos_en_carrito(%s)',(session['PedidoID']))
+            Productos = cur.fetchall();
+            cur.execute('call valor_total(%s)',(session['PedidoID']))
+            valor = cur.fetchall();
+            cur.close()
+            return render_template('shopping-cart.html',productos=Productos, valor = valor )
+        except:
+            return redirect('/Productos')
 
 
 
@@ -196,8 +201,44 @@ def salida():
     session.pop('pedido_id')
     return redirect('/')
 
+@app.route('/compra',methods=['GET','POST'])
+def venta():
+    if session.get('user_id'):
+        if request.method == "POST":
+            try:
+                details = request.form
+                session['metodo'] = details['metodo']
+                session['direccion'] = details['direccion']
+                return  redirect('/factura')
+            except:
+                return "error"
+        return render_template('ventas.html')
+    else:
+        return redirect('/login')
 
 
+@app.route('/factura')
+def factura():
+    try:
+        cur = mysql.get_db().cursor()
+        cur.execute("call registro_envio(%s)",session['direccion'])
+        idenvio = cur.fetchall()
+        cur.execute("call registro_factura(%s,%s,%s,%s)",(session['PedidoID'],idenvio,session['user_id'],session['metodo']))
+        return redirect('/Exit')
+    except:
+        return redirect('/Exit')
+
+@app.errorhandler(404)
+def page_not_found(e):
+
+    return render_template('404.html'), 404
+
+@app.route('/eliminar_de_carrito/<nom>')
+def eliminar_de_carrito(nom):
+    cur = mysql.get_db().cursor()
+    cur.execute('call eliminar_de_carrito(%s,%s)',(nom,session['PedidoID']))
+    mysql.get_db().commit()
+    return redirect('/Carro')
 
 if __name__ == '__main__':
     app.run()

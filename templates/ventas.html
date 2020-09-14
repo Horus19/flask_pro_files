@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="../static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i">
+    <link rel="stylesheet" href="../static/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/assets/css/CanitoFormularioCompra2.css">
+    <link rel="stylesheet" href="../static/assets/css/Form.css">
+    <link rel="stylesheet" href="../static/assets/css/styles.css">
+    
+</head>
+
+<body>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <form id="contactForm" method="POST" action="">
+            <div class="form-row text-left" style="padding: 0px;">
+                <div class="col"></div>
+                <div class="col-md-6" id="message">
+                    <fieldset style="margin: 0px;padding: 0px;height: 54px;width: 460px;">
+                        <legend style="font-style: normal;font-weight: bold;font-size: 28px;height: 23px;">Detalle Compra</legend>
+                    </fieldset>
+                    
+                        <div class="form-group has-feedback"><label for="from_name" style="font-size: 20px;">Metodo de pago</label>
+                            <select name="metodo" class="form-control d-lg-flex align-items-lg-end" style="font-size: 20px;padding: 11px;margin: 0px;height: 47px;">
+                                <option value="1">Tarjeta Crédito / Débito</option>
+                                <option value="2">Transferencia Bancaria</option>
+                                <option value="3">Paypal</option>
+                                <option value="4">PSE</option>
+                                <option value="4">MercadoPago</option>
+                                <option value="4">Efecty</option>
+                            </select>
+                        </div>
+                    
+                        <div class="form-group has-feedback"><label for="from_name" style="font-size: 20px;">Direccion envio</label>
+                            <input type="text" id="direccion" name="direccion"><br><br>
+                        </div>
+                    
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color: #ff4000;padding: 8px;font-size: 18px;">ENVIAR &nbsp;<i class="fa fa-chevron-circle-right"></i></button></div>
+                <hr>
+            </div>
+            <div class="col"></div>
+    </div>
+    </form>
+    </div>
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

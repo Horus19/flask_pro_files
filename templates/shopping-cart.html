@@ -31,6 +31,11 @@
             <tr>
                 <th>{{producto.0}}</th>
                 <th>{{producto.1}}</th>
+                <th>   
+                    <a class="navbar-brand" href="/eliminar_de_carrito/{{producto.0}}">
+                        <img src="../static/img/delete.svg" width="30" height="30" class="d-inline-block align-top" alt='Logo Boostrap'>
+                    </a>
+                </th>
             </tr>
             {% endfor %}
             <tr>
