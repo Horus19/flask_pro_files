@@ -196,9 +196,7 @@ def cambiar_contrasena():
 
 @app.route('/Exit')
 def salida():
-    session.pop('user_id')
-    session.pop('PedidoID')
-    session.pop('pedido_id')
+    session.clear()
     return redirect('/')
 
 @app.route('/compra',methods=['GET','POST'])
@@ -217,8 +215,9 @@ def venta():
         return redirect('/login')
 
 
-@app.route('/factura')
+@app.route('/factura',methods=['GET','POST'])
 def factura():
+
     try:
         cur = mysql.get_db().cursor()
         cur.execute("call registro_envio(%s)",session['direccion'])
@@ -227,6 +226,7 @@ def factura():
         return redirect('/Exit')
     except:
         return redirect('/Exit')
+
 
 @app.errorhandler(404)
 def page_not_found(e):
